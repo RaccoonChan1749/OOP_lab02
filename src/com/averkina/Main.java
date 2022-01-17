@@ -29,8 +29,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(System.in);
 
-        String inPath = "C:\\5\\OOP\\lab02\\file\\inputArray.txt";
-        String outPath = "C:\\5\\OOP\\lab02\\file\\outputArray.txt";
+        String inPath = ".\\file\\inputArray.txt";
+        String outPath = ".\\file\\outputArray.txt";
 
         int size = 0;
         double range = 0;
