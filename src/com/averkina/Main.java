@@ -23,10 +23,11 @@ package com.averkina;
 */
 
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         Scanner in = new Scanner(System.in);
 
         String inPath = ".\\file\\inputArray.txt";
@@ -41,7 +42,7 @@ public class Main {
             try {
                 size = in.nextInt();
                 correct = true;
-            } catch (Exception ex) {
+            } catch (InputMismatchException ex) {
                 System.out.printf("Ошибка! Некорректный ввод пункта меню!\n");
                 in.nextLine();
                 correct = false;
@@ -53,7 +54,7 @@ public class Main {
                     range = in.nextDouble();
                     in.nextLine();
                     correct = true;
-                } catch (Exception ex) {
+                } catch (InputMismatchException ex) {
                     System.out.printf("Ошибка! Некорректный ввод пункта меню!\n");
                     in.nextLine();
                     correct = false;
