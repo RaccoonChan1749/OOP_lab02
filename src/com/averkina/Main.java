@@ -23,35 +23,62 @@ package com.averkina;
 */
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
-        try {
-            String in = "C:\\5\\OOP\\lab02\\inputArray.txt";
-            String out = "C:\\5\\OOP\\lab02\\outputArray.txt";
+        Scanner in = new Scanner(System.in);
 
-            ArraySquare array;
-            array = new ArraySquare(10, 100);
-            array.PrintArray(in, "", false, true);
+        String inPath = "C:\\5\\OOP\\lab02\\file\\inputArray.txt";
+        String outPath = "C:\\5\\OOP\\lab02\\file\\outputArray.txt";
 
-            array = new ArraySquare(in);
-            array.PrintArray(out, "Начальный массив:", false, false);
+        int size = 0;
+        double range = 0;
+        boolean correct = false;
 
-            array.Turn90();
-            array.PrintArray(out, "Поворот на 90:", true, false);
+        while (!correct) {
+            System.out.printf("\nВведите размер матрицы: ");
+            try {
+                size = in.nextInt();
+                correct = true;
+            } catch (Exception ex) {
+                System.out.printf("Ошибка! Некорректный ввод пункта меню!\n");
+                in.nextLine();
+                correct = false;
+            }
 
-            array.Turn180();
-            array.PrintArray(out, "Поворот на 180:", true, false);
-
-            array.Turn270();
-            array.PrintArray(out, "Поворот на 270:", true, false);
-
-            array.Division();
-            array.PrintArray(out, "Деление:", true, false);
-        } catch (OutOfMemoryError e) {
-            System.out.println("Ошибка! Произошла нехватка памяти!");
+            if (correct) {
+                System.out.printf("Введите границы значений матрицы [-N,N]: ");
+                try {
+                    range = in.nextDouble();
+                    in.nextLine();
+                    correct = true;
+                } catch (Exception ex) {
+                    System.out.printf("Ошибка! Некорректный ввод пункта меню!\n");
+                    in.nextLine();
+                    correct = false;
+                }
+            }
         }
+
+        ArraySquare array;
+        array = new ArraySquare(size, range);
+        array.printArray(inPath, "", false, true);
+
+        array = new ArraySquare(inPath);
+        array.printArray(outPath, "Начальный массив:", false, false);
+
+        array.turn90();
+        array.printArray(outPath, "Поворот на 90:", true, false);
+
+        array.turn180();
+        array.printArray(outPath, "Поворот на 180:", true, false);
+
+        array.turn270();
+        array.printArray(outPath, "Поворот на 270:", true, false);
+
+        array.division();
+        array.printArray(outPath, "Деление:", true, false);
     }
 }
 

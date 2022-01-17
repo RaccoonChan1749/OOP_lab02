@@ -7,18 +7,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class ArraySquare {
-    int size;
-    double array[][];
+    private int size;
+    private double array[][];
 
-    public ArraySquare(int size) {
-        Random random = new Random();
-        try {
-            if (size > 1000000) throw new MaxValueException();
-            this.size = size;
-        } catch (MaxValueException e) {
-            System.out.println(e.toString());
-        }
-    }
     public ArraySquare(int size, double range) {
         Random random = new Random();
         array = new double[size][size];
@@ -27,12 +18,17 @@ public class ArraySquare {
             this.size = size;
         } catch (MaxValueException e) {
             System.out.println(e.toString());
+            return;
         }
 
-        for(int i=0;i<size;i++){
-            for(int j=0;j<size;j++){
-                array[i][j] = -range + 2*range * random.nextDouble();
+        try {
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    array[i][j] = -range + 2 * range * random.nextDouble();
+                }
             }
+        } catch (OutOfMemoryError e) {
+            System.out.println("Ошибка! Произошла нехватка памяти!");
         }
     }
     public ArraySquare(int size, double rangeMin, double rangeMax) {
@@ -41,63 +37,42 @@ public class ArraySquare {
         try {
             if (size > 1000000) throw new MaxValueException();
             this.size = size;
-        } catch (MaxValueException e) {
-            System.out.println(e.toString());
-        }
 
-        for(int i=0;i<size;i++){
-            for(int j=0;j<size;j++){
-                array[i][j] = rangeMin + (rangeMax-rangeMin) * random.nextDouble();
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    array[i][j] = rangeMin + (rangeMax - rangeMin) * random.nextDouble();
+                }
             }
+        } catch (MaxValueException | OutOfMemoryError e) {
+            e.printStackTrace();
         }
     }
     public ArraySquare(String pathName) {
         int row = 0;
         int column = 0;
 
-        try {
-            Scanner in = new Scanner(new File(pathName));
+        try (Scanner in = new Scanner(new File(pathName))) {
 
-            try {
-                this.size = in.nextInt();
-                if (size > 1000000) throw new MaxValueException();
-            } catch (InputMismatchException e) {
-                System.out.println("Ошибка! Неверно указан размер матрицы!");
-                return;
-            } catch (NoSuchElementException e) {
-                System.out.println("Ошибка! В файле нет размера матрицы!");
-                return;
-            } catch (MaxValueException e) {
-                System.out.println(e.toString());
-            }
+            this.size = in.nextInt();
+            if (size > 1000000) throw new MaxValueException();
 
             this.array = new double[this.size][this.size];
-
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     try {
                         this.array[i][j] = in.nextDouble();
-                    } catch (InputMismatchException e) {
-                        System.out.println("Ошибка! Неверно указан элемент матрицы!");
-                        return;
                     } catch (NoSuchElementException e) {
                         System.out.println("Ошибка! В файле не хватает элементов матрицы!");
                         return;
                     }
                 }
             }
-
-            in.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Ошибка! Файл не найден!");
-            return;
+        } catch (NoSuchElementException | MaxValueException | OutOfMemoryError | FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
-    public int GetSize() {
-        return size;
-    }
-    public void PrintArray(){
+    public void printArray(){
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
                 System.out.printf("%.3f\t",array[i][j]);
@@ -105,10 +80,8 @@ public class ArraySquare {
             System.out.println();
         }
     }
-    public void PrintArray(String pathName, String message, boolean isAppend, boolean isSize) {
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(pathName, isAppend));
-
+    public void printArray(String pathName, String message, boolean isAppend, boolean isSize) {
+        try(BufferedWriter out = new BufferedWriter(new FileWriter(pathName, isAppend))){
             if (isAppend) out.newLine();
             if (!isSize) out.write(message);
             else out.write(Integer.toString(size));
@@ -119,16 +92,12 @@ public class ArraySquare {
                 }
                 out.newLine();
             }
-
-            out.flush();
-            out.close();
         } catch (IOException e) {
-            System.out.println("Ошибка!");
-            return;
+            e.printStackTrace();
         }
     }
 
-    public void Turn90() {
+    public void turn90() {
         double arrayNew[][] = new double[size][size];
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
@@ -137,7 +106,7 @@ public class ArraySquare {
         }
         array = arrayNew;
     }
-    public void Turn180() {
+    public void turn180() {
         double arrayNew[][] = new double[size][size];
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
@@ -146,7 +115,7 @@ public class ArraySquare {
         }
         array = arrayNew;
     }
-    public void Turn270() {
+    public void turn270() {
         double arrayNew[][] = new double[size][size];
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
@@ -155,7 +124,7 @@ public class ArraySquare {
         }
         array = arrayNew;
     }
-    public void Division() {
+    public void division() {
         double sum = 0;
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
@@ -171,7 +140,7 @@ public class ArraySquare {
                 }
                 catch(ZeroException e)
                 {
-                    System.out.println(e.toString());
+                    e.printStackTrace();
                     return;
                 }
             }

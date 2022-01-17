@@ -1,6 +1,6 @@
 package com.averkina;
 
-class MaxValueException extends java.lang.Exception {
+class MaxValueException extends ArithmeticException {
     public String toString()
     {
         return "Ошибка! Превышено макс. кол-во элементов!";
